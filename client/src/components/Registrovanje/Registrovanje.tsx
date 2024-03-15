@@ -2,6 +2,7 @@ import './Registrovanje.scss';
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import * as yup from 'yup';
+import { NavLink } from "react-router-dom";
 
 interface Klijent {
   korisnickoImeKlij: string;
@@ -56,6 +57,7 @@ const Registrovanje = () => {
 
       const response = await axios.post('http://localhost:3001/klijent', klijentData);
       if (response.status === 200) {
+        sessionStorage.setItem('korisnickoIme', JSON.stringify(klijentData.korisnickoImeKlij));
         alert('Uspešno ste registrovali klijenta!');
       } else {
         alert('Došlo je do greške prilikom registracije.');
@@ -68,6 +70,8 @@ const Registrovanje = () => {
       } else {
         alert('Došlo je do greške prilikom slanja zahteva.');
       }
+    } finally {
+        window.location.reload();
     }
   };
 
@@ -103,7 +107,7 @@ const Registrovanje = () => {
       </button>
       <div id="regPrijava">
         <p>Imate nalog?</p>
-        <a href="Prijavljivanje.html">Prijavite se</a>
+        <NavLink to="/stranicaPrijava" className={({ isActive }) => (isActive ? "link-active" : "link")}>Prijavi se</NavLink>
       </div>
     </form>
   );

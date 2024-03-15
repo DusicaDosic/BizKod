@@ -1,13 +1,15 @@
 import { Routes, Route, Navigate } from "react-router"
-import StranicaLogovanje from "./pages/StranicaLogovanje/StranicaLogovanje"
+import StranicaRegistracija from "./pages/StranicaRegistracija/StranicaRegistracija"
+import StranicaPrijava from "./pages/StranicaPrijava/StranicaPrijava"
 
 const Routing = () => {
 
 
     return (
         <Routes>
-            <Route path="/" element={<Navigate to="stranicaLogovanje" replace={true} />} />
-            <Route path="stranicaLogovanje" element={<StranicaLogovanje />} />
+            <Route path="/" element={<Navigate to="stranicaRegistracija" replace={true} />} />
+            <Route path="stranicaRegistracija" element={<StranicaRegistracija />} />
+            <Route path="stranicaPrijava" element={<StranicaPrijava />} />
         </Routes >
     )
 }

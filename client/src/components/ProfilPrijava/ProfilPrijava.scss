@@ -1,0 +1,92 @@
+.user-menu {
+    display: flex;
+    justify-content: flex-end;
+
+    .dugmad {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding-top: 1vw;
+        margin-right: 1vw;
+    }
+
+    .Registracija,
+    .Prijava {
+        background-color: #D70040;
+        border-color: #D70040;
+        color:  white;
+        width: 12vw;
+        height: 3vw;
+        border-radius: 1vw;
+        margin-bottom: 0.8vw;
+
+        &:hover {
+            box-shadow: 0 0 0.5vw 0.5vw rgba(255, 0, 0, 0.3);
+            transition-duration: 0.5s;
+        }
+
+        a {
+        text-decoration: none;
+        color: white;
+        }
+    }
+
+    .Prijava {
+        background-color: whitesmoke;
+        color: black;
+        border-color: whitesmoke;
+
+        &:hover {
+            box-shadow: 0 0 0.5vw 0.5vw rgba(255, 255, 255, 0.3);
+            transition-duration: 0.5s;
+        }
+
+        a {
+            color:black;
+        }
+
+    }
+
+    .imgKorisnik {
+        margin-right: 2.6vw;
+        width: 8vw;
+        cursor: pointer;
+
+        &:hover {
+            box-shadow: 0 0 10px 10px rgba(255, 255, 255, 0.5);
+            transition-duration: 0.5s;
+        }
+    }
+
+    #meni {
+        width: 15vw;
+        position:absolute; 
+        right: 0vw; 
+        top: 9vw;
+        color:white; 
+        background-color: #24252A;
+        z-index:2; display:flex; flex-direction:column;
+        padding: 0;
+        margin: 0;
+
+        li {
+            box-sizing: border-box;
+            border:0.1vw solid white; 
+            width:15vw;
+            margin: 0;
+            padding: 0.8vw 0 0 0;
+            text-align: center;
+            height: 3.5vw;
+            font-size: 1.5vw;
+            list-style-type: none; 
+
+            a {
+                text-decoration: none;
+                font-size: 1.2vw;
+                color: white;
+            }
+        }
+    }
+}
+
+

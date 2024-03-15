@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 app.use(cors());
 app.use(bodyParser.json());
+
 // Routers
 const klijentRouter = require('./routes/klijent');
 app.use("/klijent", klijentRouter);

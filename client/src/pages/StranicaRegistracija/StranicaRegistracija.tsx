@@ -1,6 +1,6 @@
 import Registrovanje from "../../components/Registrovanje/Registrovanje";
 
-const StranicaLogovanje = () => {
+const StranicaRegistracija = () => {
     return (
       <div className="login-page">
         <Registrovanje />
@@ -8,4 +8,4 @@ const StranicaLogovanje = () => {
     );
   };
   
-export default StranicaLogovanje;
+export default StranicaRegistracija;
