@@ -1,7 +1,7 @@
 module.exports = (sequelize , DataTypes) => {
     const Stan = sequelize.define('Stan', {
         cena: {
-          type: DataTypes.STRING,
+          type: DataTypes.FLOAT,
           allowNull: false
         },
         kvadratura: {
@@ -10,12 +10,12 @@ module.exports = (sequelize , DataTypes) => {
         },
        
         brSoba:{
-          type:DataTypes.STRING,
+          type:DataTypes.FLOAT,
           allowNull: false,
           unique: true
         },
         opis:{
-          type:DataTypes.INTEGER(1),
+          type:DataTypes.STRING,
           allowNull: false
         },
        
@@ -30,15 +30,15 @@ module.exports = (sequelize , DataTypes) => {
    
           },
             cimer:{
-            type:DataTypes.STRING,
+            type:DataTypes.BOOLEAN,
             allowNull: false
           },
           pol:{
-            type:DataTypes.INTEGER,
+            type:DataTypes.BOOLEAN,
             allowNull: true
           },
           pusenje:{
-            type:DataTypes.INTEGER,
+            type:DataTypes.BOOLEAN,
             allowNull: true
           },
  

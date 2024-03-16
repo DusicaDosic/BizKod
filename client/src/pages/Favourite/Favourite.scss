@@ -1,0 +1,28 @@
+@import "../../styles/themeVariables";
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.none {
+  display: none;
+}
+
+.displayEmpty {
+  @include themify($themes) {
+    color: themed("textColor");
+  }
+  font-size: 20px;
+  letter-spacing: 2px;
+  text-align: center;
+  line-height: 50px;
+  display: flex;
+  align-items: center;
+}

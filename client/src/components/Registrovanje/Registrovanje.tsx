@@ -1,24 +1,30 @@
+// Registracija.tsx
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import * as Yup from 'yup';
 import './Registrovanje.scss';
-import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import * as yup from 'yup';
 import { NavLink } from "react-router-dom";
 
 interface Klijent {
-  korisnickoImeKlij: string;
-  lozinkaKlij: string;
-  imeKlij: string | null;
-  prezimeKlij: string | null;
+  imeKlij: string;
+  prezimeKlij: string;
   imejlKlij: string;
+  polKlijenta: number;
+  lozinka: string;
+  datRodjenja: Date;
+  download_url: string;
 }
 
 const Registrovanje = () => {
   const [klijenti, setKlijenti] = useState<Klijent[]>([]);
-  const [unetoKI, setUnetoKI] = useState<string>('');
   const [lozinka, setLozinka] = useState<string>('');
+  const [lozinkaConfirm, setLozinkaConfirm] = useState<string>('');
   const [imejl, setImejl] = useState<string>('');
   const [ime, setIme] = useState<string>('');
   const [prezime, setPrezime] = useState<string>('');
+  const [pol, setPol] = useState<number>(0);
+  const [datRodjenja, setDatRodjenja] = useState<Date>(new Date());
+  const [slika, setSlika] = useState<string>('');
 
   useEffect(() => {
     axios.get("http://localhost:3001/klijent").then((response) => {
@@ -26,91 +32,162 @@ const Registrovanje = () => {
     });
   }, []);
 
-  const schema = yup.object().shape({
-    korisnickoImeKlij: yup.string().required('Korisničko ime je obavezno polje'),
-    lozinkaKlij: yup.string().required('Lozinka je obavezno polje').min(8, 'Lozinka mora sadržati najmanje 8 karaktera'),
-    imejlKlij: yup.string().email('Unesite validnu email adresu').required('Email je obavezno polje'),
+  const osamnaestGodina = new Date();
+  osamnaestGodina.setFullYear(osamnaestGodina.getFullYear() - 18);
+
+  const schema = Yup.object().shape({
+    imeVal: Yup.string().required('Ime je obavezno'),
+    prezimeVal: Yup.string().required('Prezime je obavezno'),
+    imejlVal: Yup.string().email('Neispravan email').required('Email je obavezan'),
+    lozinkaVal: Yup.string().required('Lozinka je obavezno polje').min(8, 'Lozinka mora sadržati najmanje 8 karaktera'),
+    datumRodjenjaVal: Yup.date().required('Datum rođenja je obavezan').max(osamnaestGodina, 'Morate biti stariji od 18 godina'),
+    confirmLozinkeVal: Yup.string()
+      .oneOf([Yup.ref('lozinkaVal')], 'Lozinke se ne poklapaju')
+      .required('Potvrda lozinke je obavezna'),
   });
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      setDatRodjenja(new Date(e.target.value));
+    }
+  };
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setSlika(reader.result as string);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
 
   const handleRegistracija = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       await schema.validate({
-        korisnickoImeKlij: unetoKI,
-        lozinkaKlij: lozinka,
-        imejlKlij: imejl,
+        imeVal: ime,
+        prezimeVal: prezime,
+        imejlVal: imejl,
+        lozinkaVal: lozinka,
+        datumRodjenjaVal: datRodjenja,
+        confirmLozinkeVal: lozinkaConfirm,
       }, { abortEarly: false });
 
-      const korisnickaImena = klijenti.map(klijent => klijent.korisnickoImeKlij);
-      if (korisnickaImena.includes(unetoKI)) {
-        alert('Korisničko ime je zauzeto');
+      const korisnickiImejl = klijenti.map(klijent => klijent.imejlKlij);
+
+      if (korisnickiImejl.includes(imejl)) {
+        alert('Postoji nalog sa unetim imejlom');
         return;
       }
 
       const klijentData = {
-        korisnickoImeKlij: unetoKI,
-        lozinkaKlij: lozinka,
         imeKlij: ime,
         prezimeKlij: prezime,
         imejlKlij: imejl,
+        polKlijenta: pol,
+        lozinka: lozinka,
+        datRodjenja: datRodjenja,
+        download_url: slika
       };
 
       const response = await axios.post('http://localhost:3001/klijent', klijentData);
       if (response.status === 200) {
-        sessionStorage.setItem('korisnickoIme', JSON.stringify(klijentData.korisnickoImeKlij));
+        sessionStorage.setItem('imejl', JSON.stringify(klijentData.imejlKlij));
         alert('Uspešno ste registrovali klijenta!');
       } else {
         alert('Došlo je do greške prilikom registracije.');
       }
     } catch (error) {
       console.error('Greška prilikom validacije ili slanja zahteva:', error);
-      if (error instanceof yup.ValidationError) {
+      if (error instanceof Yup.ValidationError) {
         const errorMessages = error.errors.join('\n');
         alert(`Greška prilikom validacije:\n${errorMessages}`);
       } else {
         alert('Došlo je do greške prilikom slanja zahteva.');
       }
     } finally {
-        window.location.reload();
+      //     window.location.reload();
     }
   };
 
   return (
-    <form id="registrovanje">
-      <h1>REGISTRACIJA</h1>
+    <div className='pageContainer'>
+      <div className='form-container'>
+        <form id="registrovanje">
 
-      <label htmlFor="korisnickoIme">Korisničko ime:</label>
-      <div className="reg">
-        <input type="text" className="korisnickoIme" name="korisnickoIme" required value={unetoKI} onChange={(e) => setUnetoKI(e.target.value)} />
-        <span className="obavezno">*</span>
+          <div className='red'>
+            <label htmlFor="firstName" >Ime:</label>
+            <input type="text" id="firstName" name="firstName" value={ime} onChange={(e) => setIme(e.target.value)} />
+          </div>
+
+          <div className='red'>
+            <label htmlFor="lastName">Prezime:</label>
+            <input type="text" id="lastName" name="lastName" value={prezime} onChange={(e) => setPrezime(e.target.value)} />
+          </div>
+
+          <div className='red'>
+            <label htmlFor="email">E-mail:</label>
+            <input type="email" id="email" name="email" required value={imejl} onChange={(e) => setImejl(e.target.value)} />
+          </div>
+
+          <div className='red'>
+            <label htmlFor="gender-select">Izaberite pol:</label>
+            <select id="gender-select" value={pol.toString()} onChange={(e) => setPol(Number(e.target.value))}>
+              <option value="0">Muško</option>
+              <option value="1">Žensko</option>
+            </select>
+          </div>
+
+          <div className='red'>
+            <label htmlFor="lozinka">Lozinka:</label>
+            <input type="password" className="lozinka" name="lozinka" required value={lozinka} onChange={(e) => setLozinka(e.target.value)} />
+          </div>
+
+          <div className='red'>
+            <label htmlFor="lozinkaConfirm">Potvrdite lozinku:</label>
+            <input type="password" className="lozinka" name="lozinka" required value={lozinkaConfirm} onChange={(e) => setLozinkaConfirm(e.target.value)} />
+          </div>
+
+          <div className='red'>
+            <label htmlFor="date-input">Datum rođenja:</label>
+            <input
+              type="date"
+              id="date-input"
+              value={datRodjenja.toISOString().split('T')[0]}
+              onChange={handleDateChange}
+            />
+          </div>
+
+          <div className='red' id='slika'>
+            <label>Dodaj profilnu sliku:</label>
+            <input type="file" onChange={handleImageChange} />
+            {slika && (
+              <img src={slika} alt="Image preview" />
+            )}
+          </div>
+
+          <div className='red' id='registracijaBtn'>
+            <button id="registrujse" onClick={handleRegistracija}>
+              Registruj se
+            </button>
+          </div>
+
+          <div className='red' id='regPrijava'>
+            <p>Imate nalog?</p>
+            <NavLink to="/stranicaPrijava" className={({ isActive }) => (isActive ? "link-active" : "link")}>Prijavi se</NavLink>
+          </div>
+        </form>
       </div>
-
-      <label htmlFor="lozinka">Lozinka:</label>
-      <div className="reg">
-        <input type="password" className="lozinka" name="lozinka" required value={lozinka} onChange={(e) => setLozinka(e.target.value)}/>
-        <span className="obavezno">*</span>
-      </div>
-
-      <label htmlFor="firstName" >Ime:</label>
-      <input type="text" id="firstName" name="firstName" value={ime} onChange={(e) => setIme(e.target.value)} />
-
-      <label htmlFor="lastName">Prezime:</label>
-      <input type="text" id="lastName" name="lastName" value={prezime} onChange={(e) => setPrezime(e.target.value)} />
-
-      <label htmlFor="email">E-mail:</label>
-      <div className="reg">
-        <input type="email" id="email" name="email" required value={imejl} onChange={(e) => setImejl(e.target.value)}/>
-        <span className="obavezno">*</span>
-      </div>
-      <button id="registrujse" onClick={handleRegistracija}>
-        Registruj se
-      </button>
-      <div id="regPrijava">
-        <p>Imate nalog?</p>
-        <NavLink to="/stranicaPrijava" className={({ isActive }) => (isActive ? "link-active" : "link")}>Prijavi se</NavLink>
-      </div>
-    </form>
+    </div>
   );
 }
 
 export default Registrovanje;
+

@@ -1,0 +1,63 @@
+@import "../../styles/_variables";
+@import "../../styles/themeVariables";
+
+.cardMenu {
+  z-index: 100;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  @include themify($themes) {
+    background: themed("bodyBackgroundColor");
+    color: themed("textColor");
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    width: 180px;
+    @include themify($themes) {
+      border-top: 1px solid themed("textColor");
+      border-bottom: 1px solid themed("textColor");
+      border-right: 2px solid themed("textColor");
+    }
+
+    li:hover {
+      letter-spacing: 3px;
+      @include themify($themes) {
+        background: themed("textColor");
+        color: themed("bodyBackgroundColor");
+      }
+      cursor: pointer;
+    }
+  }
+
+  li {
+    list-style: none;
+    @include themify($themes) {
+      border-left: 3px solid themed("textColor");
+      border-top: 1.5px solid themed("textColor");
+      border-bottom: 1.5px solid themed("textColor");
+    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1.9px;
+    height: 40px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    span {
+      margin-right: 5px;
+      font-weight: 500;
+    }
+
+    svg {
+      margin-left: 5px;
+    }
+  }
+}
