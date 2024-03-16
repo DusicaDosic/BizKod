@@ -1,0 +1,51 @@
+@import "../../styles/_variables";
+@import "../../styles/themeVariables";
+
+footer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 40px;
+  height: 45px;
+  background-color: rgb(247, 250, 252);
+  letter-spacing: 1px;
+  @include themify($themes) {
+    background: themed("headerFooterBackground");
+    color: themed("textColor");
+  }
+}
+
+.container-footer--all,
+.container-footer--favourite {
+  @include themify($themes) {
+    border-top: themed("border");
+  }
+}
+
+.container-footer--all {
+  position: relative;
+}
+
+.container-footer--favourite {
+  position: static;
+}
+
+.left,
+.right {
+  margin-left: 20px;
+  margin-right: 35px;
+}
+
+@media screen and (max-width: 1000px) {
+  .left,
+  .right {
+    margin-left: 5px;
+    margin-right: 20px;
+  }
+
+  .container-footer--favourite {
+    position: static;
+  }
+}
