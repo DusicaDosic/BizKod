@@ -4,7 +4,7 @@ module.exports = (sequelize , DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      imeKlij: {
+      author: {
         type: DataTypes.STRING,
         allowNull: false
       },
@@ -17,11 +17,6 @@ module.exports = (sequelize , DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      jmbgKlijenta:{
-        type:DataTypes.STRING,
-        allowNull: false,
-        unique: true
-      },
       polKlijenta:{
         type:DataTypes.INTEGER(1),
         allowNull: false
@@ -30,12 +25,27 @@ module.exports = (sequelize , DataTypes) => {
         type:DataTypes.DATEONLY,
         allowNull: false
       },
-      slikaURL: { // Dodavanje kolone za URL slike
+      download_url: { // Dodavanje kolone za URL slike
         type: DataTypes.STRING,
-        allowNull: false // Ako slika nije obavezna
-
+        allowNull: true // Ako slika nije obavezna
+      },
+      drusMreza_url: { // Dodavanje kolone za URL slike
+        type: DataTypes.STRING,
+        allowNull: true // Ako slika nije obavezna
       },
     });
 
+    Klijent.associate = (models) => {
+      Klijent.hasMany(models.Stan, {
+        onDelete: "cascade"
+      });
+      Klijent.hasMany(models.OmiljeniStan, {
+        onDelete: "cascade"
+      });
+      Klijent.hasMany(models.KorisnikLobi, {
+        onDelete: "cascade"
+      });
+
+}; 
   return Klijent;
-}
+};
