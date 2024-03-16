@@ -11,8 +11,7 @@ module.exports = (sequelize , DataTypes) => {
        
         brSoba:{
           type:DataTypes.FLOAT,
-          allowNull: false,
-          unique: true
+          allowNull: false
         },
         opis:{
           type:DataTypes.STRING,
@@ -48,7 +47,7 @@ module.exports = (sequelize , DataTypes) => {
           onDelete:"cascade",
         });
         Stan.hasMany(models.OmiljeniStan, {
-            onDelete: "cascade"
+            onDelete: "cascade",
           });
     };
     return Stan;
