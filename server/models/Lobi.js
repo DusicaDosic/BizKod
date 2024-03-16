@@ -1,6 +1,6 @@
 module.exports = (sequelize , DataTypes) => {
 const Lobi = sequelize.define('Lobi', {
-    pol: {
+        pol: {
         type: DataTypes.INTEGER(1),
         allowNull: false
               },
@@ -13,6 +13,14 @@ const Lobi = sequelize.define('Lobi', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    godineOd: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+  },
+  godineDo: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+},
   });
    Lobi.associate = (models)=>{
     Lobi.hasMany(models.KorisnikLobi,{
