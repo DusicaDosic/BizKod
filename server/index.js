@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
 
 // Routers
 const klijentRouter = require('./routes/Klijent');
@@ -13,6 +14,11 @@ app.use("/klijent", klijentRouter);
 
 const stanRouter = require('./routes/Stan');
 app.use("/stan", stanRouter);
+
+
+const lobiRouter = require('./routes/Lobi');
+app.use("/lobi", lobiRouter);
+
 
 const mestoRouter = require('./routes/Mesto');
 app.use("/mesto", mestoRouter);
@@ -25,6 +31,7 @@ app.use("/lobi", lobiRouter);
 
 const omiljeniStanRouter = require('./routes/OmiljeniStan');
 app.use("/omiljeniStan", omiljeniStanRouter);
+
 
 db.sequelize.sync().then(() => {
     app.listen(3001, () => {
