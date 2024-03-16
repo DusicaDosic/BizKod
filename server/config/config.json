@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "StefanMaric1",
-    "database": "bizkoddb",
+    "password": "Andjela123",
+    "database": "bizkod",
     "host": "localhost",
     "dialect": "mysql"
   },
