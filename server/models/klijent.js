@@ -1,24 +1,41 @@
 module.exports = (sequelize , DataTypes) => {
-    const Klijent = sequelize.define('Klijent', {
-        korisnickoImeKlij: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          primaryKey: true
-        },
-        lozinkaKlij: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
-        imeKlij: {
-          type: DataTypes.STRING
-        },
-        prezimeKlij: {
-          type: DataTypes.STRING
-        },
-        imejlKlij: {
-          type: DataTypes.STRING
-        }
-      });
+  const Klijent = sequelize.define('Klijent', {
+      lozinkaKlij: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      imeKlij: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      prezimeKlij: {
+        type: DataTypes.STRING,
+        allowNull: false
 
-    return Klijent;
+      },
+      imejlKlij: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      jmbgKlijenta:{
+        type:DataTypes.STRING,
+        allowNull: false,
+        unique: true
+      },
+      polKlijenta:{
+        type:DataTypes.INTEGER(1),
+        allowNull: false
+      },
+      datRodjenja:{
+        type:DataTypes.DATEONLY,
+        allowNull: false
+      },
+      slikaURL: { // Dodavanje kolone za URL slike
+        type: DataTypes.STRING,
+        allowNull: false // Ako slika nije obavezna
+
+      },
+    });
+
+  return Klijent;
 }
