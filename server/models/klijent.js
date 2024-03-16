@@ -15,7 +15,8 @@ module.exports = (sequelize , DataTypes) => {
       },
       imejlKlij: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique:true
       },
       polKlijenta:{
         type:DataTypes.INTEGER(1),
