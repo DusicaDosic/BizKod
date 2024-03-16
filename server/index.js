@@ -8,8 +8,12 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routers
-const klijentRouter = require('./routes/klijent');
+const klijentRouter = require('./routes/Klijent');
 app.use("/klijent", klijentRouter);
+
+
+const stanRouter = require('./routes/Stan');
+app.use("/stan", stanRouter);
 
 db.sequelize.sync().then(() => {
     app.listen(3001, () => {
