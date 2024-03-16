@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 const klijentRouter = require('./routes/Klijent');
 app.use("/klijent", klijentRouter);
 
+
 const stanRouter = require('./routes/Stan');
 app.use("/stan", stanRouter);
 
