@@ -26,8 +26,7 @@ app.use("/mesto", mestoRouter);
 const korisnikLobiRouter = require('./routes/KorisnikLobi');
 app.use("/korisnikLob", korisnikLobiRouter);
 
-const lobiRouter = require('./routes/Lobi');
-app.use("/lobi", lobiRouter);
+
 
 const omiljeniStanRouter = require('./routes/OmiljeniStan');
 app.use("/omiljeniStan", omiljeniStanRouter);

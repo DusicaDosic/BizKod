@@ -47,7 +47,7 @@ p {
   height: fit-content;
   @include themify($themes) {
     background-color: themed("cardBackground");
-    border: 3px solid #ffcc95;
+    border: 3px solid #b8aa9a;
   }
   position: relative;
   border-radius: 25px;

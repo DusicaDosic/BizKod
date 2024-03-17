@@ -33,9 +33,13 @@ module.exports = (sequelize , DataTypes) => {
             allowNull: false
           },
           pol:{
-            type:DataTypes.BOOLEAN,
+            type:DataTypes.INTEGER,
             allowNull: true
           },
+          kucniLjubimac: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
           pusenje:{
             type:DataTypes.BOOLEAN,
             allowNull: true

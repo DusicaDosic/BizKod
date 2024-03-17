@@ -5,12 +5,12 @@ import axios from "axios";
 import * as yup from 'yup';
 
 interface Klijent {
-  korisnickoImeKlij: string;
+  imejlKlij: string;
   lozinkaKlij: string;
 }
 
 const Prijava = () => {
-  const [prijUnetoKI, setPrijUnetoKI] = useState('');
+  const [unetImejl, setUnetImejl] = useState('');
   const [prijLozinka, setPrijLozinka] = useState('');
   const [klijenti, setKlijenti] = useState<Klijent[]>([]);
 
@@ -22,7 +22,7 @@ const Prijava = () => {
   }, []);
 
   const schema = yup.object().shape({
-    korisnickoImeKlij: yup.string().required('Niste uneli korisničko ime'),
+    imejlKlijenta: yup.string().required('Niste uneli korisničko ime'),
     lozinkaKlij: yup.string().required('Niste uneli lozinku').min(8, 'Lozinka mora sadržati najmanje 8 karaktera'),
   });
 
@@ -30,16 +30,17 @@ const Prijava = () => {
         event.preventDefault();   
     try {
         await schema.validate({
-        korisnickoImeKlij: prijUnetoKI,
+        imejlKlijenta: unetImejl,
         lozinkaKlij: prijLozinka,
         }, { abortEarly: false });
 
-        const foundUser = klijenti.find(klijent => klijent.korisnickoImeKlij === prijUnetoKI && klijent.lozinkaKlij === prijLozinka);
+        const foundUser = klijenti.find(klijent => klijent.imejlKlij === unetImejl && klijent.lozinkaKlij === prijLozinka);
         if (foundUser) {
-            sessionStorage.setItem('korisnickoIme', JSON.stringify(foundUser.korisnickoImeKlij));
+            sessionStorage.setItem('imejl', JSON.stringify(foundUser.imejlKlij));
             alert('Uspešno ste se prijavili');
+            window.location.reload();
         } else {
-            alert('Pogrešno korisničko ime ili lozinka');
+            alert('Pogrešan imejl ili lozinka');
         }
 
     } catch (error) {
@@ -50,17 +51,15 @@ const Prijava = () => {
             } else {
                 alert('Došlo je do greške prilikom slanja zahteva.');
             }
-        } finally {
-            window.location.reload();
-        }
+        } 
     };
 
     return (
      <form id="prijava">
       <h1>PRIJAVA</h1>
 
-        <label htmlFor="korisnickoIme">Korisničko ime:</label>
-        <input type="text" className="korisnickoIme" name="korisnickoIme" required value={prijUnetoKI} onChange={(e) => setPrijUnetoKI(e.target.value)}/>
+        <label htmlFor="imejl">E-mail:</label>
+        <input type="text" className="imejl" name="imejl" required value={unetImejl} onChange={(e) => setUnetImejl(e.target.value)}/>
 
         <label htmlFor="lozinka">Lozinka:</label>
         <input type="password" className="lozinka" name="lozinka" required value={prijLozinka} onChange={(e) => setPrijLozinka(e.target.value)}/>
