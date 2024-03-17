@@ -8,7 +8,7 @@ interface PictureMenuProps {
     onCustomize: () => void; // Add onCustomize prop here
 }
 
-const PictureMenu = ({ download_url, id, onCustomize }: PictureMenuProps) => {
+const PictureMenu = ({ download_url, id }: PictureMenuProps) => {
     return (
         <div className="cardMenu">
             <ul>

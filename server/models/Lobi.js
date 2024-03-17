@@ -25,6 +25,7 @@ module.exports = (sequelize , DataTypes) => {
        Lobi.associate = (models)=>{
         Lobi.hasMany(models.KorisnikLobi,{
           onDelete:"cascade",
+          as:'korisnici'
         });
     };
        
