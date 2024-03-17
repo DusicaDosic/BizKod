@@ -3,41 +3,52 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
 import Card from "../../components/Card/Card";
-import Pagination from "../../components/Pagination/Pagination";
-import "../../util/constants"
-import useFavorites from "../../hooks/useFavourites";
+
+import "../../util/constants";
+
 import "./All.scss";
 import Banner from "../../components/Baner/Baner";
-import Registrovanje from "../../components/Registrovanje/Registrovanje";
 
-interface ImageData {
-    id: string;
-    author: string;
-    download_url: string;
+interface stan {
+    cena: any,
+    kvadratura: number,
+    id: string,
+    brSoba: number,
+    opis: string,
+    download_url: string,
+    maxBr: number,
+    cimer: number,
+    pol: number,
+    pusenje: number,
+    ljubimci: number,
+    klijentId:number
 }
 
 const All = () => {
-    const [currentPage, setCurrentPage] = useState(1)
-    const [images, setImages] = useState<ImageData[]>([]);
+
+    const [stanData, setStanData] = useState<stan[]>([]);
     const location = useLocation();
     const pathName = location.pathname;
     const extraClassName = pathName === '/all' ? '-all' : '';
-    const { addToFavorites } = useFavorites();
+  
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    }
-    const fetchImages = () => {
-        axios
-            .get(`v2/list?page=${currentPage + 1}&limit=12`)
-            .then((response) => {
-                setImages(response.data);
-            })
-            .catch(() => swal("Error"))
-    };
     useEffect(() => {
-        fetchImages();
-    }, [currentPage]);
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/stan');
+                if (response.data && response.data.length > 0) {
+                    setStanData(response.data);
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                swal('Error', 'Failed to fetch data from the server', 'error');
+            }
+        };
+
+        fetchData();
+    }, []);
+
+
 
     return (
         <>
@@ -48,11 +59,24 @@ const All = () => {
             />
             <div className={`pageAllContainer-${extraClassName}`}>
                 <div className="imageContainer">
-                    {images.map((image) => <Card download_url={image.download_url} author={image.author} key={image.id} id={image.id} onClick={() =>
-                        addToFavorites(image.id, image.author, image.download_url)
-                    } />)}
+                    {stanData.map((data) => (
+                        <Card
+                            key={data.id}
+                            id={data.id}
+                            cena={data.cena}
+                            opis={data.opis}
+                            kvadratura={data.kvadratura}
+                            brSoba={data.brSoba}
+                            download_url={data.download_url}
+                            max_br={data.maxBr}
+                            cimer={data.cimer}
+                            pol={data.pol}
+                            pusenje={data.pusenje}
+                            KlijentId={data.klijentId}
+                            /* onClick={() => addToFavorites(data.id, data.download_url, data.author) */
+                        />
+                    ))}
                 </div>
-                <Pagination totalPages={75} onPageChange={handlePageChange} />
             </div >
         </>
     );
